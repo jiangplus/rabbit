@@ -3,6 +3,11 @@ class Api::ProfilesController < ApiController
 		render json: { result: 'ok' }
 	end
 
+	def login
+		p params
+		render json: { result: 'ok' }
+	end
+
 	def show
 		if params[:auth_token]
 		  profile = Profile.find_by(auth_token: params[:auth_token])
