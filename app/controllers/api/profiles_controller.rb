@@ -10,11 +10,11 @@ class Api::ProfilesController < ApiController
 		app_secret = ENV['WX_APP_SECRET']
 		res = RestClient.post("https://api.weixin.qq.com/sns/jscode2session?appid=#{app_id}&secret=#{app_secret}&js_code=#{code}&grant_type=authorization_code", '')
 		data = JSON.parse(res.body)
+		openid = data["openid"]
 
-		profile = Profile.create(
-			username: params[:username],
-			auth_token: data["openid"],
-			)
+		profile = Profile.find_by(auth_token: openid)
+		profile = Profile.create(username: params[:username], auth_token: openid) unless profile
+
 		render json: { result: 'ok', profile: profile.as_json }
 	end
 
