@@ -8,7 +8,7 @@ class Api::ProfilesController < ApiController
 		code = params[:code]
 		app_id = ENV['WX_APP_ID']
 		app_secret = ENV['WX_APP_SECRET']
-		res = RestClient.post("https://api.weixin.qq.com/sns/jscode2session?appid=#{app_id}&secret=#{app_secret}&js_code=#{code}&grant_type=authorization_code")
+		res = RestClient.post("https://api.weixin.qq.com/sns/jscode2session?appid=#{app_id}&secret=#{app_secret}&js_code=#{code}&grant_type=authorization_code", '')
 		data = JSON.parse(res.body)
 
 		profile = Profile.create(
