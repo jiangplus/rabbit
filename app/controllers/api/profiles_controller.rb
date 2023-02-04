@@ -13,7 +13,11 @@ class Api::ProfilesController < ApiController
 		openid = data["openid"]
 
 		profile = Profile.find_by(auth_token: openid)
-		profile = Profile.create(username: params[:username], auth_token: openid) unless profile
+		if profile
+			profile.update(username: params[:username])
+		else
+			profile = Profile.create(username: params[:username], auth_token: openid)
+		end
 
 		render json: { result: 'ok', profile: profile.as_json }
 	end
