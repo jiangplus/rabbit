@@ -14,6 +14,14 @@ class Api::ProfilesControllerTest < ActionDispatch::IntegrationTest
     post api_items_url, params: {auth_token: "cvbnm", recever_name: "another", data: "http://example.com/img.jpg", data: "good day", url: "http://example.com/img.jpg"}
     p response.body
 
+    item_id = JSON.parse(response.body)["item"]["id"]
+
+    get api_item_url(item_id)
+    p response.body
+
+    patch api_item_url(item_id), params: {auth_token: "cvbnm"}
+    p response.body
+
     # profile = Profile.find_by(auth_token: params[:auth_token])
 
     # item = Item.create(

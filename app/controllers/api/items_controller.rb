@@ -1,16 +1,20 @@
 class Api::ItemsController < ApiController
 	def index
-		render json: { result: 'ok' }
+		if params[:sender_token]
+			profile = Profile.find_by(auth_token: params[:sender_token])
+			items = Item.where(sender: profile).all
+		elsif params[:receiver_token]
+			profile = Profile.find_by(auth_token: params[:receiver_token])
+			items = Item.where(receiver: profile).all
+		end
+
+		render json: { result: 'ok', items: items.as_json }
 	end
 
 	def show
-		if params[:auth_token]
-			profile = Profile.find_by(auth_token: params[:auth_token])
-		elsif params[:username]
-			profile = Profile.find_by(username: params[:username])
-		end
+		item = Item.find(params[:id])
 
-		render json: { result: 'ok', profile: profile.as_json }
+		render json: { result: 'ok', item: item.as_json }
 	end
 
 	def create
@@ -23,6 +27,14 @@ class Api::ItemsController < ApiController
 			url: params[:url],
 			content: params[:content],
 			)
+
+		render json: { result: 'ok', item: item.as_json }
+	end
+
+	def update # receive
+		profile = Profile.find_by(auth_token: params[:auth_token])
+		item = Item.find(params[:id])
+		item.update(receiver: profile)
 
 		render json: { result: 'ok', item: item.as_json }
 	end
