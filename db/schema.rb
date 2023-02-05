@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_03_125842) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_05_190143) do
   create_table "items", force: :cascade do |t|
     t.integer "sender_id"
     t.integer "receiver_id"
-    t.string "recever_name"
+    t.string "receiver_name"
     t.string "data"
     t.string "url"
     t.string "content"

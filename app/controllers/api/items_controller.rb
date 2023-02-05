@@ -22,12 +22,16 @@ class Api::ItemsController < ApiController
 
 		item = Item.create(
 			sender: profile,
-			recever_name: params[:recever_name],
+			receiver_name: params[:receiver_name],
 			data: params[:data],
 			url: params[:url],
 			content: params[:content],
 			)
 
+		if params[:receiver_token]
+		  receiver = Profile.find_by(auth_token: params[:receiver_token])
+		  item.update(receiver: receiver)
+		end
 		render json: { result: 'ok', item: item.as_json }
 	end
 

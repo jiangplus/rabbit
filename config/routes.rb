@@ -6,5 +6,7 @@ Rails.application.routes.draw do
     resources :profiles
     resources :items
     post 'login' => 'profiles#login'
+    post 'claim' => 'items#update'
   end
 end
+
